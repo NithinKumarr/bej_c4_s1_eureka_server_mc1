@@ -1,0 +1,24 @@
+#version: "3.9"
+#services:
+#  mongodbservice:
+#    image: mongo:latest
+#    ports:
+#      - "27017:27017"
+#    container_name: mongo-container
+#    networks:
+#      - springcloud-music-net
+#
+#  music-auth-service:
+#    container_name: music-auth-service
+#    build: ./
+#    networks:
+#      - springcloud-music-net
+#    ports:
+#      - "65100:65100"
+#    depends_on:
+#      - mongodbservice
+#    restart: always
+#
+#networks:
+#  springcloud-music-net:
+#    driver: bridge

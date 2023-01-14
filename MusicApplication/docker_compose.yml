@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+  mongoservices:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: music-container
+    networks:
+      - springcloud-music-net
+
+  mysql-music-services:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    container_name: mysql-music-container
+    networks:
+      - usermusic-net
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+  music-auth-service:
+    container_name: musics-auth-service
+    build: Muzix/
+    networks:
+      - springcloud-music-net
+    ports:
+      - "65100:65100"
+    depends_on:
+      - mongoservices
+    restart: always
+
+  user-music-service:
+    container_name: users-music-service
+    build: Demo/
+    networks:
+      - usermusic-net
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql-music-services
+    restart: always
+
+networks:
+  springcloud-music-net:
+    driver: bridge
+  usermusic-net:
+    driver: bridge
+
